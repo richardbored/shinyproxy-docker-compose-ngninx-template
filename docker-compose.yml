@@ -1,0 +1,26 @@
+version: "3.6"
+
+services:
+  proxy:
+    image: shiny-app_proxy:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - sp-example-net
+
+  webserver:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - ./nginx/nginx-local.conf:/etc/nginx/nginx.conf
+    networks:
+      - sp-example-net
+
+networks:
+  sp-example-net:
+    name: sp-example-net
